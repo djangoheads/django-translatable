@@ -37,13 +37,13 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-poetry-
 
-      - name: Cache DjangoHeads directories
+      - name: Cache Dragoman directories
         uses: actions/cache@v3
         with:
-          path: /tmp/.djangoheads
-          key: ${{ runner.os }}-djangoheads-${{ github.sha }}
+          path: /tmp/.dragoman
+          key: ${{ runner.os }}-dragoman-${{ github.sha }}
           restore-keys: |
-            ${{ runner.os }}-djangoheads-
+            ${{ runner.os }}-dragoman-
 
       - name: Build and cache Docker images
         uses: docker/build-push-action@v3
