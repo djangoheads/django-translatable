@@ -1,4 +1,3 @@
-# It is used in `mypy.ini` and tests.
 # The following installed apps are required for stubtest to run correctly.
 INSTALLED_APPS = [
     "django.contrib.auth",

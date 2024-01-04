@@ -33,23 +33,17 @@ classifiers = [
 
 [tool.poetry.dependencies]
 python = "^3.8"
-pytest = "^7.4.3"
 psycopg2-binary = "^2.9.9"
 
 [tool.poetry.group.dev.dependencies]
 pre-commit = "^3.5.0"
+pytest = "^7.4.3"
 django = "^4.2.7"
 nox = "^2023.4.22"
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
-
-[tool.mypy]
-python_version = "3.8"
-ignore_missing_imports = true
-strict = true
-plugins = ["mypy_django_plugin.main"]
 
 [tool.black]
 line-length = 120
