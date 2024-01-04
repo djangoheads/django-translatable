@@ -1,6 +1,5 @@
-from django.core.exceptions import FieldDoesNotExist
 from django.db.models import Model
-from django_weblate import settings
+from django.conf import settings
 
 
 class DjangoModelCollector:
@@ -10,13 +9,10 @@ class DjangoModelCollector:
 
     def collect_field(self, name):
         meta = self.model._meta
-        path = f"{settings.PREFIX}{meta.app_label}/{meta.model_name}/{self.model.pk}/{name}/"
+        path = f"{settings.PREFIX}{meta.app_label}/{meta.model_name}/" f"{self.model.pk}/{name}/"
         value = getattr(self.model, name, None)
         self.result.append((path, value))
 
     def collect(self):
-        # if not isinstance(settings.TRANSLATE_FIELDS_NAME, list):
-        #     raise ValueError("Model's TRANSLATE_FIELDS_NAME value should be of list type")
-
         for field_name in getattr(self.model, settings.TRANSLATE_FIELDS_NAME):
             self.collect_field(field_name)

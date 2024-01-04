@@ -1,5 +1,4 @@
 import pytest
-from django.test import TestCase
 import tests.__setup_django__  # noqa: F401
 
 
