@@ -23,6 +23,8 @@ if not settings.configured:
         STATIC_ROOT="/tmp/static/",  # noqa: S108
         STATIC_URL="/static/",
         SECRET_KEY=hashlib.md5(str(random.random()).encode()).hexdigest(),  # noqa: S324, S311
+        PREFIX="field://",
+        TRANSLATE_FIELDS_NAME="translate_fields",
     )
 
     django.setup()
