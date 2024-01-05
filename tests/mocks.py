@@ -1,5 +1,5 @@
 from django.conf import settings
-from fixtures.countries import countries
+from .fixtures import countries
 from typing import TypeVar, Type, List
 
 T = TypeVar("T")

@@ -1,5 +1,5 @@
 import tests.__setup_django__  # noqa: F401
-from tests.mocks import ModelMockUtils
+from .mocks import ModelMockUtils
 
 
 def test_collector() -> None:
