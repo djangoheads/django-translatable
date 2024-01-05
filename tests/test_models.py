@@ -1,9 +1,9 @@
 import tests.__setup_django__  # noqa: F401
-from dragoman.utils import ModelMockUtils
+from tests.mocks import ModelMockUtils
 
 
-def test_models_loading() -> None:
-    """Tests the app has been loaded."""
+def test_collector() -> None:
+    """Test the collector's logic on the mocked models"""
 
     models = ModelMockUtils.get_models()
 
