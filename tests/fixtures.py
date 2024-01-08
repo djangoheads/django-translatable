@@ -30,9 +30,9 @@ countries = [
         "app_label": "models",
         "model_name": "country",
         "pk": 4,
-        "name": "Portugal",
-        "iso": "PT",
-        "iso3": "PRT",
+        "name": "Spain",
+        "iso": "ES",
+        "iso3": "ESP",
         "translate_fields": ["name"],
     },
     {
@@ -45,3 +45,11 @@ countries = [
         "translate_fields": ["name"],
     },
 ]
+
+translation = {
+    "field://models/country/1/name": "Казахстан",
+    "field://models/country/2/name": "Таиланд",
+    "field://models/country/3/name": "Португалия",
+    "field://models/country/4/name": "Испания",
+    "field://models/country/5/name": "Нидерланды",
+}

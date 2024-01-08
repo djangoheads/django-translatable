@@ -1,11 +1,25 @@
+from django.conf import settings
+
 import tests.__setup_django__  # noqa: F401
-from .mocks import ModelMockUtils
+from .fixtures import translation
+from .mocks import ModelMockUtils, DjangoModelMockPatcher
 
 
-def test_collector() -> None:
+def test_collector():
     """Test the collector's logic on the mocked models"""
 
-    models = ModelMockUtils.get_models()
+    instances = ModelMockUtils.get_instances()
 
-    for model in models:
-        ModelMockUtils.update_source_translation_by_instance(model())
+    for instance in instances:
+        ModelMockUtils.update_source_translation_by_instance(instance())
+
+
+def test_patcher():
+    instances = [instance() for instance in ModelMockUtils.get_instances()]
+
+    for instance in instances:
+        DjangoModelMockPatcher(instance, translation).patch()
+
+    for instance in instances:
+        path = f"{settings.PREFIX}{instance.app_label}/{instance.model_name}/{instance.pk}/name"
+        assert translation.get(path) == instance.name

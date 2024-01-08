@@ -20,9 +20,26 @@ class DjangoModelMockCollector:
             self.collect_field(field_name)
 
 
+class DjangoModelMockPatcher:
+    def __init__(self, instance: Type[T], translation: dict):
+        self.instance = instance
+        self.translation = translation
+
+    def patch_field(self, name: str):
+        path = f"{settings.PREFIX}{self.instance.app_label}/{self.instance.model_name}/{self.instance.pk}/{name}/"
+        translation = self.translation.get(path) or self.translation.get(path.rstrip("/"))
+        if not translation:
+            return
+        setattr(self.instance, name, translation)
+
+    def patch(self):
+        for field_name in self.instance.translate_fields:
+            self.patch_field(field_name)
+
+
 class ModelMockUtils:
     @classmethod
-    def get_models(cls) -> List[Type[T]]:
+    def get_instances(cls) -> List[Type[T]]:
         return [type("Country", (), country) for country in countries]
 
     @classmethod
