@@ -3,8 +3,6 @@ import os
 from django.core.management import call_command
 from django.test import TransactionTestCase
 
-import tests.__setup_django__  # noqa: F401
-
 
 class InitDjangoCommandTest(TransactionTestCase):
     """Tests for initdjango command."""

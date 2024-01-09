@@ -1,6 +1,5 @@
 from django.conf import settings
 
-import tests.__setup_django__  # noqa: F401
 from .fixtures import translation
 from .mocks import ModelMockUtils, DjangoModelMockPatcher
 

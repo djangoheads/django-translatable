@@ -131,6 +131,17 @@ argon2 = ["argon2-cffi (>=19.1.0)"]
 bcrypt = ["bcrypt"]
 
 [[package]]
+name = "django-threadlocals"
+version = "0.10"
+description = "Contains utils for storing and retreiving values from threadlocals, and middleware for placing the current Django request in threadlocal storage."
+optional = false
+python-versions = "*"
+files = [
+    {file = "django-threadlocals-0.10.tar.gz", hash = "sha256:c06a4c6701a56bcca2acd0bd655aaa136501ab7e5e6327ab7245be629906432a"},
+    {file = "django_threadlocals-0.10-py3-none-any.whl", hash = "sha256:fd5e2cb36224163a53f326baddfc36251d150466234a16d8f97f54ad92bce89d"},
+]
+
+[[package]]
 name = "exceptiongroup"
 version = "1.2.0"
 description = "Backport of PEP 654 (exception groups)"
@@ -528,4 +539,4 @@ test = ["covdefaults (>=2.3)", "coverage (>=7.2.7)", "coverage-enable-subprocess
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "9a0cefc654eae17eaa0439fcd39cebd4152fa9914db4dc8587a92545fb1ff1c4"
+content-hash = "208abb2b3d0521140fcc0892ef5110a082a069bd5cf73cec43e4df0e311409d0"

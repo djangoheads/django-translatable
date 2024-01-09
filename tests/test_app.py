@@ -2,7 +2,6 @@ from django.apps import apps
 from django.conf import settings
 from django.test import TestCase
 
-import tests.__setup_django__  # noqa: F401
 from dragoman.apps import DragomanConfig
 
 

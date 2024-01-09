@@ -1,4 +1,6 @@
+# It is used tests.
 # The following installed apps are required for stubtest to run correctly.
+
 INSTALLED_APPS = [
     "django.contrib.auth",
     "django.contrib.admin",
