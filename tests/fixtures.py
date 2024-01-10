@@ -7,9 +7,9 @@ countries = [
 ]
 
 translation = {
-    "field://test_django_project/testcountry/1/name": "Казахстан",
-    "field://test_django_project/testcountry/2/name": "Таиланд",
-    "field://test_django_project/testcountry/3/name": "Португалия",
-    "field://test_django_project/testcountry/4/name": "Испания",
-    "field://test_django_project/testcountry/5/name": "Нидерланды",
+    "field://test_django_project/tcountry/1/name": "Казахстан",
+    "field://test_django_project/tcountry/2/name": "Таиланд",
+    "field://test_django_project/tcountry/3/name": "Португалия",
+    "field://test_django_project/tcountry/4/name": "Испания",
+    "field://test_django_project/tcountry/5/name": "Нидерланды",
 }

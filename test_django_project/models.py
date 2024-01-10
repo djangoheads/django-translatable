@@ -2,7 +2,7 @@ from django.db import models
 from django.core.validators import RegexValidator
 
 
-class TestCountry(models.Model):
+class TCountry(models.Model):
     translate_fields = ["name"]
 
     name = models.CharField(max_length=255, verbose_name="Country name", help_text="Provide a name")

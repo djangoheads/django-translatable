@@ -4,20 +4,22 @@ from django.conf import settings
 from .fixtures import translation
 from .mocks import ModelMockUtils, DjangoModelMockPatcher
 
-from test_django_project.models import TestCountry
+from test_django_project.models import TCountry
 
 
+@pytest.mark.django_db
 def test_collector():
     """Test the collector's logic on the mocked models"""
 
-    instances = ModelMockUtils.get_instances(TestCountry)
+    instances = ModelMockUtils.get_instances(TCountry)
 
     for instance in instances:
         ModelMockUtils.update_source_translation_by_instance(instance)
 
 
+@pytest.mark.django_db
 def test_patcher():
-    instances = ModelMockUtils.get_instances(TestCountry)
+    instances = ModelMockUtils.get_instances(TCountry)
 
     for instance in instances:
         DjangoModelMockPatcher(instance, translation).patch()
@@ -30,4 +32,4 @@ def test_patcher():
 
 @pytest.mark.django_db
 def test_models():
-    assert TestCountry.objects.all().count() == 5
+    assert TCountry.objects.all().count() == 5
