@@ -11,4 +11,5 @@ INSTALLED_APPS = [
     "django.contrib.sites",
     "django.contrib.staticfiles",
     "dragoman",
+    "test_django_project",
 ]

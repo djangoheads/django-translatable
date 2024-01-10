@@ -8,6 +8,8 @@ import django
 from django.conf import settings as django_settings
 
 from test_django_project.settings import INSTALLED_APPS
+from django.core.management import call_command
+from fixtures import countries
 
 
 # initialize django settings
@@ -37,3 +39,16 @@ def dj_cache():
     django_cache.clear()
     yield django_cache
     django_cache.clear()
+
+
+def setup_countries():
+    from test_django_project.models import TestCountry
+
+    models = [TestCountry(**country) for country in countries]
+    TestCountry.objects.bulk_create(models)
+
+
+@pytest.fixture(scope="session", autouse=True)
+def django_db_setup():
+    call_command("migrate")
+    setup_countries()

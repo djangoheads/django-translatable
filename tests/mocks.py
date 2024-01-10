@@ -1,6 +1,8 @@
 from django.conf import settings
-from .fixtures import countries
-from typing import TypeVar, Type, List
+from django.db.models import QuerySet, Model
+
+from dragoman.collectors import DjangoModelCollector
+from typing import TypeVar, Type
 
 T = TypeVar("T")
 
@@ -21,30 +23,31 @@ class DjangoModelMockCollector:
 
 
 class DjangoModelMockPatcher:
-    def __init__(self, instance: Type[T], translation: dict):
-        self.instance = instance
+    def __init__(self, model: Type[T], translation: dict):
+        self.model = model
         self.translation = translation
 
     def patch_field(self, name: str):
-        path = f"{settings.PREFIX}{self.instance.app_label}/{self.instance.model_name}/{self.instance.pk}/{name}/"
+        meta = self.model._meta
+        path = f"{settings.PREFIX}{meta.app_label}/{meta.model_name}/{self.model.pk}/{name}/"
         translation = self.translation.get(path) or self.translation.get(path.rstrip("/"))
         if not translation:
             return
-        setattr(self.instance, name, translation)
+        setattr(self.model, name, translation)
 
     def patch(self):
-        for field_name in self.instance.translate_fields:
+        for field_name in self.model.translate_fields:
             self.patch_field(field_name)
 
 
 class ModelMockUtils:
     @classmethod
-    def get_instances(cls) -> List[Type[T]]:
-        return [type("Country", (), country) for country in countries]
+    def get_instances(cls, model: Type[Model]) -> QuerySet[Type[Model]]:
+        return model.objects.all()
 
     @classmethod
     def update_source_translation_by_instance(cls, instance: Type[T]):
-        collector = DjangoModelMockCollector(instance)
+        collector = DjangoModelCollector(instance)
         collector.collect()
         for key, source in collector.result:
             cls.update_source_translation(key, source)
