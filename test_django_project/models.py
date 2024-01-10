@@ -23,3 +23,9 @@ class TCountry(models.Model):
         verbose_name = "country"
         verbose_name_plural = "countries"
         ordering = ["name"]
+
+
+class TRegion(models.Model):
+    name = models.CharField(max_length=255, blank=True, null=True)
+
+    countries = models.ManyToManyField(TCountry, related_name="regions", related_query_name="region")

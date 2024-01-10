@@ -6,6 +6,8 @@ countries = [
     {"pk": 5, "name": "The Netherlands", "code": "NL"},
 ]
 
+regions = [{"pk": 1, "name": "East", "countries": [1, 2]}, {"pk": 2, "name": "West", "countries": [3, 4, 5]}]
+
 translation = {
     "field://test_django_project/tcountry/1/name": "Казахстан",
     "field://test_django_project/tcountry/2/name": "Таиланд",

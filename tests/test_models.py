@@ -4,7 +4,7 @@ from django.conf import settings
 from .fixtures import translation
 from .mocks import ModelMockUtils, DjangoModelMockPatcher
 
-from test_django_project.models import TCountry
+from test_django_project.models import TCountry, TRegion
 
 
 @pytest.mark.django_db
@@ -32,4 +32,6 @@ def test_patcher():
 
 @pytest.mark.django_db
 def test_models():
-    assert TCountry.objects.all().count() == 5
+    region = TRegion.objects.filter(name="East").first()
+    country_names = [country.name for country in region.countries.all()]
+    assert country_names == ["Казахстан", "Таиланд"]

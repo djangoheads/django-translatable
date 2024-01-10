@@ -9,7 +9,7 @@ from django.conf import settings as django_settings
 
 from test_django_project.settings import INSTALLED_APPS
 from django.core.management import call_command
-from .fixtures import countries
+from .fixtures import countries, regions
 
 
 # initialize django settings
@@ -42,15 +42,21 @@ def dj_cache():
 
 
 @pytest.mark.django_db
-def setup_countries():
-    from test_django_project.models import TCountry
+def setup_models():
+    from test_django_project.models import TCountry, TRegion
 
-    models = [TCountry(**country) for country in countries]
-    TCountry.objects.bulk_create(models)
+    country_models = [TCountry(**country) for country in countries]
+    TCountry.objects.bulk_create(country_models)
+
+    east = TRegion.objects.create(pk=regions[0]["pk"], name=regions[0]["name"])
+    east.countries.set(TCountry.objects.filter(pk__in=regions[0]["countries"]))
+
+    west = TRegion.objects.create(pk=regions[1]["pk"], name=regions[1]["name"])
+    west.countries.set(TCountry.objects.filter(pk__in=regions[1]["countries"]))
 
 
 @pytest.fixture(scope="session", autouse=True)
 def django_db_setup(django_db_setup, django_db_blocker):
     with django_db_blocker.unblock():
         call_command("migrate")
-        setup_countries()
+        setup_models()
