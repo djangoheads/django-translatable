@@ -5,9 +5,9 @@ from tests.fixtures import translation
 
 def patch_translation(sender, instance, **kwargs):
     meta = instance._meta
-    path = f"{settings.PREFIX}{meta.app_label}/{meta.model_name}/{instance.pk}/name/"
+    path = f"{settings.PREFIX}{meta.app_label}/{meta.model_name}/{instance.pk}/name"
 
-    tr = translation.get(path) or translation.get(path.rstrip("/"))
+    tr = translation.get(path)[kwargs["direction"]]
     if not tr:
         return
     setattr(instance, "name", tr)

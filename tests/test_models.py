@@ -1,12 +1,13 @@
 import pytest
+from functools import partial
+import django.apps
 from django.conf import settings
 
-from test_django_project.signals import patch_translation
 from .mocks import ModelMockUtils, DjangoModelMockPatcher
-
+from test_django_project.signals import patch_translation
 from test_django_project.models import TCountry, TRegion
 
-from django.db.models.signals import post_init
+from django.db.models.signals import post_init, pre_save
 from tests.fixtures import translation
 
 
@@ -35,13 +36,21 @@ def test_patcher():
 
 @pytest.mark.django_db
 def test_models():
-    import django.apps
-
     models = [model for model in django.apps.apps.get_models() if hasattr(model, settings.TRANSLATE_FIELDS_NAME)]
 
     for model in models:
-        post_init.connect(patch_translation, sender=model)
+        post_init.connect(receiver=partial(patch_translation, direction="straight"), sender=model, weak=False)
+        pre_save.connect(receiver=partial(patch_translation, direction="back"), sender=model, weak=False)
 
     region = TRegion.objects.filter(name="East").first()
     country_names = [country.name for country in region.countries.all()]
+
     assert country_names == ["Казахстан", "Таиланд"]
+
+    countries = []
+    for country in region.countries.all():
+        country.save()
+        countries.append(country)
+
+    country_names = [country.name for country in countries]
+    assert country_names == ["Kazakhstan", "Thailand"]

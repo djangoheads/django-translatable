@@ -24,8 +24,19 @@ class TCountry(models.Model):
         verbose_name_plural = "countries"
         ordering = ["name"]
 
+    def __str__(self):
+        return f"{self.name}"
+
 
 class TRegion(models.Model):
     name = models.CharField(max_length=255, blank=True, null=True)
 
     countries = models.ManyToManyField(TCountry, related_name="regions", related_query_name="region")
+
+    class Meta:
+        verbose_name = "region"
+        verbose_name_plural = "regions"
+        ordering = ["name"]
+
+    def __str__(self):
+        return f"{self.name}"
