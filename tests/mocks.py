@@ -15,24 +15,8 @@ class TranslationMockVault:
         return translation
 
 
-class TranslationMockProvider(TranslationProvider):
-    def __init__(self, vault: TranslationMockVault):
-        self.vault = vault
-
-    def get(self, path: str, lang: str):
-        inner_vault = self.vault.get_inner_vault()
-        return inner_vault.get(path)[lang]
-
-    def set(self):
-        pass
-
-    @classmethod
-    def get_path(cls, model: Model, field_name: str) -> str:
-        return f"{settings.PREFIX}{model._meta.app_label}/{model._meta.model_name}/{model.pk}/{field_name}"
-
-
 class DjangoModelMockCollector:
-    def __init__(self, provider: TranslationMockProvider):
+    def __init__(self, provider: TranslationProvider):
         self.provider = provider
         self.result = []
 
@@ -45,28 +29,6 @@ class DjangoModelMockCollector:
     def collect_model(self, model: Model):
         for field_name in getattr(model, settings.TRANSLATE_FIELDS_NAME):
             self.collect_field(field_name, model)
-
-
-class DjangoModelMockPatcher:
-    def __init__(self, provider: TranslationMockProvider):
-        self.provider = provider
-
-    def patch_field(self, name: str, model: Model, lang: str):
-        path = self.provider.get_path(model, field_name=name)
-        translation = self.provider.get(path, lang)
-
-        if not translation:
-            return
-
-        setattr(model, name, translation)
-
-    def patch_model(self, model: Model, lang: str):
-        translate_fields = (
-            getattr(model, settings.TRANSLATE_FIELDS_NAME) if hasattr(model, settings.TRANSLATE_FIELDS_NAME) else []
-        )
-
-        for field_name in translate_fields:
-            self.patch_field(field_name, model, lang)
 
 
 class ModelMockUtils:

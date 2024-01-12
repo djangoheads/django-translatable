@@ -1,22 +1,25 @@
 from django.conf import settings
 from django.db.models import Model
+from dragoman.utils import TranslationProvider
 
 
 class DjangoModelPatcher:
-    def __init__(self, provider: dict):
+    def __init__(self, provider: TranslationProvider):
         self.provider = provider
 
-    def patch_field(self, name: str, model: Model):
-        meta = model._meta
-        path = f"{settings.PREFIX}{meta.app_label}/{meta.model_name}/{model.pk}/{name}/"
-        translation = self.provider.get(path) or self.provider.get(path.rstrip("/"))
+    def patch_field(self, name: str, model: Model, lang: str):
+        path = self.provider.get_path(model, field_name=name)
+        translation = self.provider.get(path, lang)
 
         if not translation:
             return
 
         setattr(model, name, translation)
 
-    def patch_model(self, model: Model):
-        if hasattr(model, settings.TRANSLATE_FIELDS_NAME):
-            for field_name in getattr(model, settings.TRANSLATE_FIELDS_NAME):
-                self.patch_field(field_name, model)
+    def patch_model(self, model: Model, lang: str):
+        translate_fields = (
+            getattr(model, settings.TRANSLATE_FIELDS_NAME) if hasattr(model, settings.TRANSLATE_FIELDS_NAME) else []
+        )
+
+        for field_name in translate_fields:
+            self.patch_field(field_name, model, lang)

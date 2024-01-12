@@ -3,12 +3,13 @@ from functools import partial
 import django.apps
 from django.conf import settings
 
-from .mocks import ModelMockUtils, DjangoModelMockPatcher, TranslationMockVault
+from dragoman.patchers import DjangoModelPatcher
+from dragoman.utils import TranslationProvider
+from .mocks import ModelMockUtils, TranslationMockVault
 from test_django_project.signals import patch_translation
 from test_django_project.models import TCountry, TRegion
 
 from django.db.models.signals import post_init, pre_save
-from tests.mocks import TranslationMockProvider
 
 
 @pytest.mark.django_db
@@ -23,11 +24,11 @@ def test_collector():
 
 @pytest.mark.django_db
 def test_patcher():
-    provider = TranslationMockProvider(TranslationMockVault)
+    provider = TranslationProvider(TranslationMockVault)
     instances = ModelMockUtils.get_instances(TCountry)
 
     for instance in instances:
-        DjangoModelMockPatcher(provider).patch_model(instance, "ru")
+        DjangoModelPatcher(provider).patch_model(instance, "ru")
 
     for instance in instances:
         path = provider.get_path(instance, "name")

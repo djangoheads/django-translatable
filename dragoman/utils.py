@@ -15,7 +15,7 @@ class ModelUtils:
     @classmethod
     def update_source_translation_by_instance(cls, instance: Model):
         collector = DjangoModelCollector()
-        collector.collect(instance)
+        collector.collect_model(instance)
         for key, source in collector.result:
             cls.update_source_translation(key, source)
 
@@ -25,12 +25,23 @@ class ModelUtils:
             return
 
 
+class TranslationVault:
+    @classmethod
+    def get_inner_vault(cls) -> dict:
+        return {}
+
+
 class TranslationProvider:
+    def __init__(self, vault: TranslationVault):
+        self.vault = vault
+
     def get(self, path: str, lang: str):
-        pass
+        inner_vault = self.vault.get_inner_vault()
+        return inner_vault.get(path)[lang]
 
     def set(self):
         pass
 
-    def get_path(self, model: Model, field_name: str) -> str:
-        return f"{settings.PREFIX}{model._meta.app_label}/{model._meta.model_name}/{model.pk}/{field_name}/"
+    @classmethod
+    def get_path(cls, model: Model, field_name: str) -> str:
+        return f"{settings.PREFIX}{model._meta.app_label}/{model._meta.model_name}/{model.pk}/{field_name}"
