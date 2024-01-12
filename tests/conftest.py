@@ -9,7 +9,7 @@ from django.conf import settings as django_settings
 
 from test_django_project.settings import INSTALLED_APPS
 from django.core.management import call_command
-from .fixtures import countries, regions
+from dragoman.fixtures import countries, regions
 from dragoman.settings import TRANSLATION_DISPATCHER
 
 

@@ -1,16 +1,17 @@
 from typing import List
 
 from django.db.models import Model
-from django.conf import settings
+
+from dragoman.utils.provider_utils import TranslationProvider
 
 
 class DjangoModelCollector:
-    def __init__(self):
+    def __init__(self, provider: TranslationProvider):
+        self.provider = provider
         self.result = []
 
     def collect_field(self, name, model: Model):
-        meta = model._meta
-        path = f"{settings.PREFIX}{meta.app_label}/{meta.model_name}/{model.pk}/{name}/"
+        path = self.provider.get_path(model, field_name=name)
         value = getattr(model, name, None)
         self.result.append((path, value))
 

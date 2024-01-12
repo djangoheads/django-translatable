@@ -1,6 +1,7 @@
 from typing import List
 from django.db.models import Model
-from dragoman.utils import TranslationProvider
+
+from dragoman.utils.common_utils import TranslationProvider
 
 
 class DjangoModelPatcher:

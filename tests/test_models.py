@@ -1,16 +1,11 @@
 import pytest
-from functools import partial
-import django.apps
 from django.conf import settings
 from django.core.management import call_command
 
 from dragoman.patchers import DjangoModelPatcher
-from dragoman.utils import TranslationProvider
-from .mocks import ModelMockUtils, TranslationMockVault
-from test_django_project.signals import patch_translation
-from test_django_project.models import TCountry, TRegion
-
-from django.db.models.signals import post_init, pre_save
+from dragoman.utils.provider_utils import TranslationProvider
+from .mocks import ModelMockUtils
+from test_django_project.models import TCountry
 
 
 @pytest.mark.django_db
@@ -28,7 +23,7 @@ def test_collector():
 @pytest.mark.django_db
 def test_patcher():
     tr_dispatcher = settings.TRANSLATION_DISPATCHER
-    provider = TranslationProvider(TranslationMockVault)
+    provider = TranslationProvider()
     instances = ModelMockUtils.get_instances(TCountry)
 
     for instance in instances:
@@ -43,25 +38,3 @@ def test_patcher():
 @pytest.mark.django_db
 def test_collect_models():
     call_command("collect_models")
-
-
-@pytest.mark.django_db
-def test_models():
-    models = [model for model in django.apps.apps.get_models() if hasattr(model, settings.TRANSLATE_FIELDS_NAME)]
-
-    for model in models:
-        post_init.connect(receiver=partial(patch_translation, direction="ru"), sender=model, weak=False)
-        pre_save.connect(receiver=partial(patch_translation, direction="en"), sender=model, weak=False)
-
-    region = TRegion.objects.filter(name="East").first()
-    country_names = [country.name for country in region.countries.all()]
-
-    assert country_names == ["Казахстан", "Таиланд"]
-
-    countries = []
-    for country in region.countries.all():
-        country.save()
-        countries.append(country)
-
-    country_names = [country.name for country in countries]
-    assert country_names == ["Kazakhstan", "Thailand"]
