@@ -5,7 +5,7 @@ from django.core.management import call_command
 from dragoman.patchers import DjangoModelPatcher
 from dragoman.utils.provider_utils import TranslationProvider
 from .mocks import ModelMockUtils
-from test_django_project.models import TCountry
+from tests.test_django_project.models import TCountry
 
 
 @pytest.mark.django_db
