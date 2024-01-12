@@ -1,21 +1,17 @@
 from django.db.models import Model
 from django.conf import settings
-from typing import TypeVar
-
-T = TypeVar("T")
 
 
 class DjangoModelCollector:
-    def __init__(self, model: Model):
-        self.model = model
+    def __init__(self):
         self.result = []
 
-    def collect_field(self, name):
-        meta = self.model._meta
-        path = f"{settings.PREFIX}{meta.app_label}/{meta.model_name}/{self.model.pk}/{name}/"
-        value = getattr(self.model, name, None)
+    def collect_field(self, name, model: Model):
+        meta = model._meta
+        path = f"{settings.PREFIX}{meta.app_label}/{meta.model_name}/{model.pk}/{name}/"
+        value = getattr(model, name, None)
         self.result.append((path, value))
 
-    def collect(self):
-        for field_name in getattr(self.model, settings.TRANSLATE_FIELDS_NAME):
-            self.collect_field(field_name)
+    def collect_model(self, model: Model):
+        for field_name in getattr(model, settings.TRANSLATE_FIELDS_NAME):
+            self.collect_field(field_name, model)

@@ -9,9 +9,9 @@ countries = [
 regions = [{"pk": 1, "name": "East", "countries": [1, 2]}, {"pk": 2, "name": "West", "countries": [3, 4, 5]}]
 
 translation = {
-    "field://test_django_project/tcountry/1/name": {"straight": "Казахстан", "back": "Kazakhstan"},
-    "field://test_django_project/tcountry/2/name": {"straight": "Таиланд", "back": "Thailand"},
-    "field://test_django_project/tcountry/3/name": {"straight": "Португалия", "back": "Portugal"},
-    "field://test_django_project/tcountry/4/name": {"straight": "Испания", "back": "Spain"},
-    "field://test_django_project/tcountry/5/name": {"straight": "Нидерланды", "back": "The Netherlands"},
+    "field://test_django_project/tcountry/1/name": {"ru": "Казахстан", "en": "Kazakhstan"},
+    "field://test_django_project/tcountry/2/name": {"ru": "Таиланд", "en": "Thailand"},
+    "field://test_django_project/tcountry/3/name": {"ru": "Португалия", "en": "Portugal"},
+    "field://test_django_project/tcountry/4/name": {"ru": "Испания", "en": "Spain"},
+    "field://test_django_project/tcountry/5/name": {"ru": "Нидерланды", "en": "The Netherlands"},
 }
