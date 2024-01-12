@@ -13,9 +13,9 @@ class ModelUtils:
         return [model for model in django.apps.apps.get_models() if hasattr(model, settings.TRANSLATE_FIELDS_NAME)]
 
     @classmethod
-    def update_source_translation_by_instance(cls, instance: Model):
+    def update_source_translation_by_instance(cls, instance: Model, translate_fields: List[str]):
         collector = DjangoModelCollector()
-        collector.collect_model(instance)
+        collector.collect_model(instance, translate_fields)
         for key, source in collector.result:
             cls.update_source_translation(key, source)
 

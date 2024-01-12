@@ -1,4 +1,4 @@
-from django.conf import settings
+from typing import List
 from django.db.models import Model
 from dragoman.utils import TranslationProvider
 
@@ -16,10 +16,6 @@ class DjangoModelPatcher:
 
         setattr(model, name, translation)
 
-    def patch_model(self, model: Model, lang: str):
-        translate_fields = (
-            getattr(model, settings.TRANSLATE_FIELDS_NAME) if hasattr(model, settings.TRANSLATE_FIELDS_NAME) else []
-        )
-
+    def patch_model(self, model: Model, translate_fields: List[str], lang: str):
         for field_name in translate_fields:
             self.patch_field(field_name, model, lang)

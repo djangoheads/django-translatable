@@ -10,6 +10,7 @@ from django.conf import settings as django_settings
 from test_django_project.settings import INSTALLED_APPS
 from django.core.management import call_command
 from .fixtures import countries, regions
+from dragoman.settings import TRANSLATION_DISPATCHER
 
 
 # initialize django settings
@@ -28,6 +29,7 @@ def pytest_configure():
         SECRET_KEY=hashlib.md5(str(random.random()).encode()).hexdigest(),  # noqa: S324, S311
         PREFIX="field://",
         TRANSLATE_FIELDS_NAME="translate_fields",
+        TRANSLATION_DISPATCHER=TRANSLATION_DISPATCHER,
     )
 
     django.setup()
