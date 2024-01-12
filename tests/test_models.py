@@ -26,7 +26,7 @@ def test_patcher():
     instances = ModelMockUtils.get_instances(TCountry)
 
     for instance in instances:
-        DjangoModelMockPatcher(instance, translation).patch()
+        DjangoModelMockPatcher(translation).patch_model(instance)
 
     for instance in instances:
         meta = instance._meta

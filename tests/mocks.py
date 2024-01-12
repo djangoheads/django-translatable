@@ -17,27 +17,32 @@ class DjangoModelMockCollector:
         value = getattr(self.mock_model, name, None)
         self.result.append((path, value))
 
-    def collect(self):
+    def collect_model(self):
         for field_name in getattr(self.mock_model, settings.TRANSLATE_FIELDS_NAME):
             self.collect_field(field_name)
 
 
 class DjangoModelMockPatcher:
-    def __init__(self, model: Type[T], translation: dict):
-        self.model = model
-        self.translation = translation
+    def __init__(self, provider: dict):
+        self.provider = provider
 
-    def patch_field(self, name: str):
-        meta = self.model._meta
-        path = f"{settings.PREFIX}{meta.app_label}/{meta.model_name}/{self.model.pk}/{name}/"
-        translation = self.translation.get(path) or self.translation.get(path.rstrip("/"))
+    def patch_field(self, name: str, model: Model):
+        meta = model._meta
+        path = f"{settings.PREFIX}{meta.app_label}/{meta.model_name}/{model.pk}/{name}/"
+        translation = self.provider.get(path) or self.provider.get(path.rstrip("/"))
+
         if not translation:
             return
-        setattr(self.model, name, translation)
 
-    def patch(self):
-        for field_name in self.model.translate_fields:
-            self.patch_field(field_name)
+        setattr(model, name, translation)
+
+    def patch_model(self, model: Model):
+        translate_fields = (
+            getattr(model, settings.TRANSLATE_FIELDS_NAME) if hasattr(model, settings.TRANSLATE_FIELDS_NAME) else []
+        )
+
+        for field_name in translate_fields:
+            self.patch_field(field_name, model)
 
 
 class ModelMockUtils:
