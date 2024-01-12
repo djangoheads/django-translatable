@@ -8,7 +8,7 @@ import django
 from django.conf import settings as django_settings
 
 from django.core.management import call_command
-from dragoman.fixtures import countries, regions
+from dragoman.fixtures import countries, cities, regions
 from dragoman.settings import TRANSLATION_DISPATCHER
 from tests.test_django_project.settings import INSTALLED_APPS
 
@@ -45,10 +45,13 @@ def dj_cache():
 
 @pytest.mark.django_db
 def setup_models():
-    from tests.test_django_project.models import TCountry, TRegion
+    from tests.test_django_project.models import TCountry, TCity, TRegion
 
     country_models = [TCountry(**country) for country in countries]
-    TCountry.objects.bulk_create(country_models)
+    country_instances = TCountry.objects.bulk_create(country_models)
+
+    for city, country in zip(cities, country_instances):
+        TCity.objects.create(pk=city["pk"], name=city["name"], population=city["population"], country=country)
 
     east = TRegion.objects.create(pk=regions[0]["pk"], name=regions[0]["name"])
     east.countries.set(TCountry.objects.filter(pk__in=regions[0]["countries"]))

@@ -36,5 +36,5 @@ def test_patcher():
 
 
 @pytest.mark.django_db
-def test_collect_models():
+def test_models_collection():
     call_command("collect_models")
