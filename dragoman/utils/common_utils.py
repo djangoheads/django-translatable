@@ -1,6 +1,6 @@
 import django.apps
 from typing import Type, List
-from ..settings import settings
+from django.conf import settings
 from django.db.models import Model
 from dragoman.collectors import DjangoModelCollector
 from dragoman.utils.provider_utils import TranslationProvider

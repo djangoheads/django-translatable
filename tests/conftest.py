@@ -5,10 +5,10 @@ from django.core.cache import cache as django_cache
 import django
 
 # renamed to avoid name conflict with pytest fixtures
-from django.conf import settings as django_settings
 
 from django.core.management import call_command
 from dragoman.fixtures import countries, cities, regions
+from django.conf import settings as django_settings
 from dragoman.settings import TRANSLATION_DISPATCHER
 from tests.test_django_project.settings import INSTALLED_APPS
 
