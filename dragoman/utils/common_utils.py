@@ -9,12 +9,14 @@ from dragoman.utils.provider_utils import TranslationProvider
 class ModelUtils:
     @classmethod
     def get_models(cls) -> List[Type[Model]]:
-        return [model for model in django.apps.apps.get_models() if hasattr(model, settings.TRANSLATE_FIELDS_NAME)]
+        all_models = [model for model in django.apps.apps.get_models()]
+        tr_keys = list(settings.TRANSLATION_DISPATCHER["models"].keys())
+
+        return [model for model in all_models if model._meta.object_name in tr_keys]
 
     @classmethod
     def collect_models(cls):
         models = ModelUtils.get_models()
-
         tr_dispatcher = settings.TRANSLATION_DISPATCHER
 
         for model in models:
